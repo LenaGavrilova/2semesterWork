@@ -197,7 +197,7 @@ public class Game implements Runnable {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e);
         }
     }
 
