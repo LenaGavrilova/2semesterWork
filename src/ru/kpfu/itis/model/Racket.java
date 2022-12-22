@@ -1,11 +1,15 @@
-package ru.kpfu.itis.view;
+package ru.kpfu.itis.model;
 
 import java.awt.*;
 
 public class Racket {
-    public int x, y, racketWidth, racketHeight, ySpeed;
+    public int x;
+    public int y;
+    public int racketWidth;
+    public int racketHeight;
+    public int ySpeed;
     private int screenHeight;
-    private int speed = 10;
+    private final int SPEED = 10;
 
     public Racket(int x, int y, int racketWidth, int racketHeight, int screenHeight) {
         this.x = x;
@@ -23,17 +27,15 @@ public class Racket {
     }
 
     public void moveUp() {
-        if (y - speed >= 0) {
-//            y -= 10;
-            setY(-speed);
+        if (y - SPEED >= 0) {
+            setY(-SPEED);
             move();
         }
     }
 
     public  void moveDown() {
-        if (y + speed + racketHeight <= screenHeight) {
-//            y += 10;
-            setY(speed);
+        if (y + SPEED + racketHeight <= screenHeight) {
+            setY(SPEED);
             move();
         }
     }
