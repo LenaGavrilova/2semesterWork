@@ -4,15 +4,13 @@ import ru.kpfu.itis.controller.KeyManager;
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
 import ru.kpfu.itis.model.ServerBall;
-import ru.kpfu.itis.networkInteraction.Server;
 import ru.kpfu.itis.view.GameFrame;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
 
-public class Game {
-    private final int PORT = 86;
+public class Game{
 
     private GameFrame gameFrame;
     private final String title;
@@ -27,8 +25,6 @@ public class Game {
     private Racket racket2;
     private ServerBall serverBall;
     private ClientBall clientBall;
-
-    Server server;
 
     private int status = -1;
     public boolean paused;
@@ -65,9 +61,9 @@ public class Game {
         serverBall.draw(graphics);
         clientBall.draw(graphics);
 
-        if (status == 1) {
+        if(status==1){
             serverBall.draw(graphics);
-        } else {
+        } else{
             clientBall.draw(graphics);}
 
         bufferStrategy.show();
@@ -103,8 +99,6 @@ public class Game {
             case (1):
                 status = 1;
                 paused = true;
-                server = new Server(PORT, this);
-                server.start();
                 break;
             case (0):
                 status = 0;
@@ -129,7 +123,4 @@ public class Game {
     }
 
 
-    public void play() {
-        paused = false;
-    }
 }
