@@ -31,7 +31,6 @@ public class GameFrame {
         frame.setVisible(true);
 
         canvas = new Canvas();
-        //Указывает на отступ внутри окна от компонентов.
         canvas.setPreferredSize(SCREEN_SIZE);
         canvas.setMaximumSize(SCREEN_SIZE);
         canvas.setMinimumSize(SCREEN_SIZE);
