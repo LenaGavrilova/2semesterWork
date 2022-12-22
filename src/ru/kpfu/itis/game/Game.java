@@ -1,5 +1,6 @@
 package ru.kpfu.itis.game;
 
+import ru.kpfu.itis.controller.KeyManager;
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
 import ru.kpfu.itis.model.ServerBall;
@@ -18,19 +19,29 @@ public class Game{
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
 
-    private boolean isRunning;
+    private KeyManager keyManager;
 
-    Racket racket1;
-    Racket racket2;
-    ServerBall serverBall;
-    ClientBall clientBall;
+    private Racket racket1;
+    private Racket racket2;
+    private ServerBall serverBall;
+    private ClientBall clientBall;
 
     private int status = -1;
+    public boolean paused;
 
-    public Game(String title, int width, int height) {
+    public Game (String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
+    }
+
+    public void tick() {
+        keyManager.tick();
+        if (status == 1) {
+            serverBall.tick();
+        } else {
+            clientBall.tick();
+        }
     }
 
     public void draw() {
@@ -63,6 +74,8 @@ public class Game{
     public void init() {
 
         gameFrame = new GameFrame(title, width, height);
+        keyManager = new KeyManager(this);
+        gameFrame.getFrame().addKeyListener(keyManager);
 
         racket1 = new Racket(0, 0, 25, 200, height);
         racket2 = new Racket(775, 0, 25, 200, height);
@@ -82,12 +95,32 @@ public class Game{
         switch (welcomeOption){
             case (-1):
                 System.exit(0);
+                break;
             case (1):
                 status = 1;
+                paused = true;
+                break;
             case (0):
-                status=0;
+                status = 0;
+                paused = false;
+                break;
         }
-
     }
+    public Racket getRacket() {
+        if (status == 1) {
+            return getRacket1();
+        } else {
+            return getRacket2();
+        }
+    }
+
+    public Racket getRacket1() {
+        return racket1;
+    }
+
+    public Racket getRacket2() {
+        return racket2;
+    }
+
 
 }
