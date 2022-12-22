@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
 
-public class Game{
+public class Game implements Runnable{
 
     private GameFrame gameFrame;
     private final String title;
@@ -25,6 +25,9 @@ public class Game{
     private Racket racket2;
     private ServerBall serverBall;
     private ClientBall clientBall;
+
+    private boolean isRunning;
+    private Thread thread;
 
     private int status = -1;
     public boolean paused;
@@ -58,8 +61,6 @@ public class Game{
 
         racket1.draw(graphics);
         racket2.draw(graphics);
-        serverBall.draw(graphics);
-        clientBall.draw(graphics);
 
         if(status==1){
             serverBall.draw(graphics);
@@ -74,13 +75,15 @@ public class Game{
     public void init() {
 
         gameFrame = new GameFrame(title, width, height);
+
         keyManager = new KeyManager(this);
+
         gameFrame.getFrame().addKeyListener(keyManager);
 
         racket1 = new Racket(0, 0, 25, 200, height);
         racket2 = new Racket(775, 0, 25, 200, height);
-        clientBall = new ClientBall();
         serverBall = new ServerBall(racket1,racket2,width,height);
+        clientBall = new ClientBall();
 
         String[] options = {"Player 1 ","Player 2"};
         int welcomeOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
@@ -122,5 +125,81 @@ public class Game{
         return racket2;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public ServerBall getServerBall()
+    {
+
+        return serverBall;
+    }
+
+    public ClientBall getClientBall()
+    {
+
+        return clientBall;
+    }
+
+    @Override
+    public void run(){
+
+        init();
+
+        double fps = 60;
+        double timePeriodTick = 1000000000/fps;
+        double delta = 0;
+        double now;
+        double lastTime = System.nanoTime();
+
+        while(isRunning)
+        {
+            now=System.nanoTime();
+            delta+=(now-lastTime)/timePeriodTick;
+            lastTime=now;
+
+            if(delta>=1)
+            {
+                if(!paused){
+                    tick();
+                }
+                draw();
+                delta--;
+            }
+        }
+    }
+    public synchronized void start()
+    {
+        if(isRunning)
+        {
+            return;
+        }
+        else
+        {
+            isRunning=true;
+        }
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public synchronized void stop()
+    {
+
+        if(!isRunning)
+        {
+            return;
+        }
+        else
+        {
+            isRunning=false;
+        }
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
