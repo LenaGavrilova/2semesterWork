@@ -7,7 +7,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 
 public class Client implements Runnable {
@@ -60,6 +59,10 @@ public class Client implements Runnable {
                         game.getRacket2().moveUp();
                     } else if (line.startsWith("s")) {
                         game.getRacket2().moveDown();
+                    } else if (line.startsWith("up")) {
+                        game.getRacket1().moveUp();
+                    } else if (line.startsWith("down")) {
+                        game.getRacket1().moveDown();
                     } else if (line.startsWith("Ball")) {
                         int[] ints = Arrays.stream(line.replaceAll("-", " -").split("[^-\\d]+"))
                                 .filter(s -> !s.matches("-?"))
