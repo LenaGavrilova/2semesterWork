@@ -4,6 +4,7 @@ import ru.kpfu.itis.controller.KeyManager;
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
 import ru.kpfu.itis.model.ServerBall;
+import ru.kpfu.itis.networkInteraction.Client;
 import ru.kpfu.itis.networkInteraction.Server;
 import ru.kpfu.itis.view.GameFrame;
 
@@ -30,6 +31,7 @@ public class Game implements Runnable {
 
 
     Server server;
+    Client client;
 
     private boolean isRunning;
     private Thread thread;
@@ -109,12 +111,14 @@ public class Game implements Runnable {
             case (1):
                 status = 1;
                 paused = true;
-                server = new Server(PORT, this);
-                server.start();
+                client = new Client("0",PORT,this);
+                client.start();
                 break;
             case (0):
                 status = 0;
                 paused = false;
+                server = new Server(PORT, this);
+                server.start();
                 break;
         }
     }
