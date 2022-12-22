@@ -2,6 +2,7 @@ package ru.kpfu.itis.game;
 
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
+import ru.kpfu.itis.model.ServerBall;
 import ru.kpfu.itis.view.GameFrame;
 
 import java.awt.Graphics;
@@ -19,7 +20,9 @@ public class Game{
 
     private boolean isRunning;
 
-    Racket racket1, racket2;
+    Racket racket1;
+    Racket racket2;
+    ServerBall serverBall;
     ClientBall clientBall;
 
     public Game(String title, int width, int height) {
@@ -42,11 +45,15 @@ public class Game{
 
         racket1.draw(graphics);
         racket2.draw(graphics);
-
+        serverBall.draw(graphics);
         clientBall.draw(graphics);
+
+        //потом добавить, что если шар со стороны сервера,
+        // то его отрисовываем, иначе клиентский
 
         bufferStrategy.show();
         graphics.dispose();
+
     }
 
     public void init() {
@@ -55,6 +62,7 @@ public class Game{
         racket1 = new Racket(0, 0, 25, 200, height);
         racket2 = new Racket(775, 0, 25, 200, height);
         clientBall = new ClientBall();
+        serverBall = new ServerBall(racket1,racket2,width,height);
 
     }
 
