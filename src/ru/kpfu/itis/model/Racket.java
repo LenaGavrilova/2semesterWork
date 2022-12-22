@@ -20,7 +20,7 @@ public class Racket {
     }
 
 
-    public void render(Graphics g) {
+    public void draw(Graphics g) {
         //сделать чтобы клиент передвал цвет
         g.setColor(Color.blue);
         g.fillRect(x, y, racketWidth, racketHeight);
