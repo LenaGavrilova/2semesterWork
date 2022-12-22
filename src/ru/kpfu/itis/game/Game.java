@@ -25,6 +25,8 @@ public class Game{
     ServerBall serverBall;
     ClientBall clientBall;
 
+    private int status = -1;
+
     public Game(String title, int width, int height) {
         this.title = title;
         this.width = width;
@@ -48,8 +50,10 @@ public class Game{
         serverBall.draw(graphics);
         clientBall.draw(graphics);
 
-        //потом добавить, что если шар со стороны сервера,
-        // то его отрисовываем, иначе клиентский
+        if(status==1){
+            serverBall.draw(graphics);
+        } else{
+            clientBall.draw(graphics);}
 
         bufferStrategy.show();
         graphics.dispose();
@@ -57,12 +61,32 @@ public class Game{
     }
 
     public void init() {
+
         gameFrame = new GameFrame(title, width, height);
 
         racket1 = new Racket(0, 0, 25, 200, height);
         racket2 = new Racket(775, 0, 25, 200, height);
         clientBall = new ClientBall();
         serverBall = new ServerBall(racket1,racket2,width,height);
+
+        String[] options = {"Player 1 ","Player 2"};
+        int welcomeOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
+                "Please choose your role",
+                "Ping-pong game",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        switch (welcomeOption){
+            case (-1):
+                System.exit(0);
+            case (1):
+                status = 1;
+            case (0):
+                status=0;
+        }
 
     }
 
