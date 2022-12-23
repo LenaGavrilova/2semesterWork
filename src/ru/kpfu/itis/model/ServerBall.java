@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ServerBall implements Ball{
     private int x = 300;
     private int y = 400;
-    private final int RADIUS = 5;
+    private final int RADIUS = 8;
     private int xMove;
     private int yMove;
     private final int SPEED = -1;
@@ -18,17 +18,7 @@ public class ServerBall implements Ball{
     private Racket racket1;
     private Racket racket2;
     public Game game;
-    public Score score;
-
-//    public ServerBall(Racket racket1, Racket racket2, int width, int height) {
-//        this.racket1 = racket1;
-//        this.racket2 = racket2;
-//        this.width = width;
-//        this.height = height;
-//        xMove = 7;
-//        yMove = 7;
-//        score = new Score(width, height);
-//    }
+    private Score score;
 
     public ServerBall(Game game,int width,int height,Score score) {
         this.game = game;
@@ -37,10 +27,8 @@ public class ServerBall implements Ball{
         xMove = 7;
         yMove = 7;
         this.width = width;
-     this.height = height;
-     score = new Score(width,height);
-
-
+        this.height = height;
+        this.score = score;
     }
 
     @Override
@@ -53,25 +41,27 @@ public class ServerBall implements Ball{
 
         Rectangle border = new Rectangle(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
 
-        if (x < 0 || x > width || border.intersects(r1) || border.intersects(r2)) {
+        if (border.intersects(r1) || border.intersects(r2)) {
             xMove *= SPEED;
             x += xMove;
+        }
+        if (x < 0 ) {
+            xMove *= SPEED;
+            x += xMove;
+            score.player2++;
+        }
+        if(x > width - RADIUS * 2){
+            xMove *= SPEED;
+            x += xMove;
+            score.player1++;
         }
 
         y += yMove;
 
-        if (y < 0 || y > height || border.intersects(r1) || border.intersects(r2)) {
+        if ( y < 0 || y > height || border.intersects(r1) || border.intersects(r2)) {
             yMove *= SPEED;
             y += yMove;
         }
-        if(x <= 0) {
-            score.player2++;
-            System.out.println(score.player1 + " " + score.player2);
-        }
-//        if (x >= width - RADIUS * 2) {
-//            score.player1++;
-//            System.out.println(score.player1 + " " + score.player2);
-//        }
         try {
             game.getServer().getOut().writeUTF("Ball "+ x +" "+ y + "\n" );
         }catch (IOException e){

@@ -5,7 +5,7 @@ import java.awt.*;
 public class ClientBall implements Ball {
     private int x;
     private int y;
-    private final int RADIUS = 5;
+    private final int RADIUS = 8;
 
     @Override
     public void tick() {
