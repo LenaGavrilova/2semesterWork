@@ -110,13 +110,13 @@ public class Game implements Runnable {
                 break;
             case (1):
                 status = 1;
-                paused = true;
-                client = new Client("0",PORT,this);
+                paused = false;
+                client = new Client(null,PORT,this);
                 client.start();
                 break;
             case (0):
                 status = 0;
-                paused = false;
+                paused = true;
                 server = new Server(PORT, this);
                 server.start();
                 break;
