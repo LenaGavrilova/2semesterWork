@@ -24,6 +24,9 @@ public class Game implements Runnable {
     public String namePlayer2;
     public String namePlayer1;
 
+    public Color color1;
+    public Color color2;
+
     private GameFrame gameFrame;
     private final String title;
     private final int width;
@@ -60,12 +63,9 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         if (status == 1) {
-//            serverBall.tick();
             clientBall.tick();
         } else {
-//            clientBall.tick();
             serverBall.tick();
-
         }
     }
 
@@ -87,11 +87,9 @@ public class Game implements Runnable {
         score.draw(graphics);
 
         if (status == 1) {
-//            serverBall.draw(graphics);
-            clientBall.draw(graphics, Color.green);
+            clientBall.draw(graphics, color1);
         } else {
-//            clientBall.draw(graphics);
-            serverBall.draw(graphics, Color.green);
+            serverBall.draw(graphics, color2);
 
         }
 
@@ -132,6 +130,7 @@ public class Game implements Runnable {
                 System.exit(0);
                 break;
             case (1):
+                color1 = setBallColor();
                 namePlayer2 = inputName();
                 status = 1;
                 paused = false;
@@ -139,6 +138,7 @@ public class Game implements Runnable {
                 client.start();
                 break;
             case (0):
+                color2 = setBallColor();
                 namePlayer1= inputName();
                 status = 0;
                 paused = true;
@@ -203,6 +203,10 @@ public class Game implements Runnable {
             return name;
 
         }
+    }
+
+    public Color setBallColor() {
+        return  JColorChooser.showDialog(null, "Цвет", null);
     }
 
     @Override
