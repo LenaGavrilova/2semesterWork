@@ -60,9 +60,9 @@ public class Client implements Runnable {
                     } else if (line.startsWith("s")) {
                         game.getRacket2().moveDown();
                     } else if (line.startsWith("up")) {
-                        game.getRacket1().moveUp();
+                        game.getRacket2().moveUp();
                     } else if (line.startsWith("down")) {
-                        game.getRacket1().moveDown();
+                        game.getRacket2().moveDown();
                     } else if (line.startsWith("Ball")) {
                         int[] ints = Arrays.stream(line.replaceAll("-", " -").split("[^-\\d]+"))
                                 .filter(s -> !s.matches("-?"))

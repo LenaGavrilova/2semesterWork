@@ -14,6 +14,8 @@ public class ServerBall implements Ball{
     private int width;
     private int height;
 
+    private Score score;
+
     public ServerBall(Racket racket1, Racket racket2, int width, int height) {
         this.racket1 = racket1;
         this.racket2 = racket2;
@@ -21,6 +23,7 @@ public class ServerBall implements Ball{
         this.height = height;
         xMove = 7;
         yMove = 7;
+        score = new Score(width, height);
     }
 
     @Override
@@ -44,11 +47,19 @@ public class ServerBall implements Ball{
             yMove *= SPEED;
             y += yMove;
         }
+        if(x <= 0) {
+            score.player2++;
+            System.out.println(score.player1 + " " + score.player2);
+        }
+        if (x >= width - radius * 2) {
+            score.player1++;
+            System.out.println(score.player1 + " " + score.player2);
+        }
     }
 
     @Override
-    public void draw(Graphics graphics) {
-        graphics.setColor(Color.red);
+    public void draw(Graphics graphics, Color c) {
+        graphics.setColor(c);
         graphics.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
     }
 }

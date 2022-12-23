@@ -3,12 +3,13 @@ package ru.kpfu.itis.game;
 import ru.kpfu.itis.controller.KeyManager;
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
+import ru.kpfu.itis.model.Score;
 import ru.kpfu.itis.model.ServerBall;
 import ru.kpfu.itis.networkInteraction.Client;
 import ru.kpfu.itis.networkInteraction.Server;
 import ru.kpfu.itis.view.GameFrame;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
 
@@ -28,6 +29,7 @@ public class Game implements Runnable {
     private Racket racket2;
     private ServerBall serverBall;
     private ClientBall clientBall;
+    private Score score;
 
 
     Server server;
@@ -49,9 +51,12 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         if (status == 1) {
-            serverBall.tick();
-        } else {
+//            serverBall.tick();
             clientBall.tick();
+        } else {
+//            clientBall.tick();
+            serverBall.tick();
+
         }
     }
 
@@ -67,14 +72,19 @@ public class Game implements Runnable {
 
         graphics.clearRect(0, 0, width, height);
 
-        racket1.draw(graphics);
-        racket2.draw(graphics);
+        racket1.draw(graphics, Color.red);
+        racket2.draw(graphics, Color.blue);
+
+        score.draw(graphics);
 
         if (status == 1) {
-            serverBall.draw(graphics);
+//            serverBall.draw(graphics);
+            clientBall.draw(graphics, Color.YELLOW);
         } else {
-            clientBall.draw(graphics);
+//            clientBall.draw(graphics);
+            serverBall.draw(graphics, Color.blue);
         }
+
 
         bufferStrategy.show();
         graphics.dispose();
@@ -85,6 +95,8 @@ public class Game implements Runnable {
 
         gameFrame = new GameFrame(title, width, height);
 
+        score = new Score(width, height);
+
         keyManager = new KeyManager(this);
 
         gameFrame.getFrame().addKeyListener(keyManager);
@@ -93,6 +105,7 @@ public class Game implements Runnable {
         racket2 = new Racket(775, 0, 25, 200, height);
         serverBall = new ServerBall(racket1, racket2, width, height);
         clientBall = new ClientBall();
+
 
         String[] options = {"Player 1 ", "Player 2"};
         int welcomeOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),

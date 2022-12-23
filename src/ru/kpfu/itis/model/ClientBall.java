@@ -13,8 +13,8 @@ public class ClientBall implements Ball {
     }
 
     @Override
-    public void draw(Graphics graphics) {
-        graphics.setColor(Color.red);
+    public void draw(Graphics graphics, Color c) {
+        graphics.setColor(c);
         graphics.fillOval(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
     }
 

@@ -6,5 +6,5 @@ public interface Ball {
 
     public void tick();
 
-    public void draw(Graphics graphics);
+    public void draw(Graphics graphics, Color c);
 }

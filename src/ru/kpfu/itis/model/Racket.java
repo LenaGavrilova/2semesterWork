@@ -20,9 +20,9 @@ public class Racket {
     }
 
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, Color c) {
         //сделать чтобы клиент передвал цвет
-        g.setColor(Color.blue);
+        g.setColor(c);
         g.fillRect(x, y, racketWidth, racketHeight);
     }
 
