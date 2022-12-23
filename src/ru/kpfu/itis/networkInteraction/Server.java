@@ -46,7 +46,7 @@ public class Server implements Runnable {
                 in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 out = new DataOutputStream(socket.getOutputStream());
 
-                 String line = "";
+                String line = "";
                 //читаем сообщение из клиента
                 while (!line.equals("Over")) {
                     try {

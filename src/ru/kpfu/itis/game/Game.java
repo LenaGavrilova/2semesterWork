@@ -1,5 +1,6 @@
 package ru.kpfu.itis.game;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import ru.kpfu.itis.controller.KeyManager;
 import ru.kpfu.itis.model.ClientBall;
 import ru.kpfu.itis.model.Racket;
@@ -11,10 +12,15 @@ import ru.kpfu.itis.view.GameFrame;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import javax.swing.*;
 
 public class Game implements Runnable {
     private final int PORT = 86;
+
+    String message;
 
     private GameFrame gameFrame;
     private final String title;
@@ -107,9 +113,10 @@ public class Game implements Runnable {
         clientBall = new ClientBall();
 
 
-        String[] options = {"Player 1 ", "Player 2"};
+
+        String[] options = {"Start game!", "Join game!"};
         int welcomeOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
-                "Please choose your role",
+                "Please choose what you need",
                 "Ping-pong game",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -122,16 +129,19 @@ public class Game implements Runnable {
                 System.exit(0);
                 break;
             case (1):
+                String namePlayer2 = inputName();
                 status = 1;
                 paused = false;
                 client = new Client(null,PORT,this);
                 client.start();
                 break;
             case (0):
+                String namePlayer1= inputName();
                 status = 0;
                 paused = true;
                 server = new Server(PORT, this);
                 server.start();
+                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join");
                 break;
         }
     }
@@ -172,6 +182,19 @@ public class Game implements Runnable {
     public ClientBall getClientBall() {
 
         return clientBall;
+    }
+
+    public String inputName() {
+        String name =  JOptionPane.showInputDialog(gameFrame.getFrame(),"Input your name:");
+        if (name.length() != 0) {
+            return name;
+        } else {
+            while (name.length() == 0) {
+                name = JOptionPane.showInputDialog(gameFrame.getFrame(),"Input your name:");
+            }
+            return name;
+
+        }
     }
 
     @Override
