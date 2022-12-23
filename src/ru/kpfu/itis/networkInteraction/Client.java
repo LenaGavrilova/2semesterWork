@@ -53,6 +53,7 @@ public class Client implements Runnable {
             String line = "";
             //читаем сообщение из клиента
             while (!line.equals("Over")) {
+                System.out.println(line);
                 game.tick();
                 game.draw();
                 try {
@@ -66,13 +67,19 @@ public class Client implements Runnable {
                     } else if (line.startsWith("down")) {
                         game.getRacket2().moveDown();
                     } else if (line.startsWith("Ball")) {
-                        int[] ints = Arrays.stream(line.replaceAll("-", " -").split("[^-\\d]+"))
-                                .filter(s -> !s.matches("-?"))
+                        int[] ints = Arrays.stream(line.replaceAll(" ", " ").split("[^-\\d]+"))
+                                .filter(s -> !s.matches(" ?"))
                                 .mapToInt(Integer::parseInt).toArray();
-
+                        System.out.println(Arrays.toString(ints));
                         game.getClientBall().setX(ints[0]);
                         game.getClientBall().setY(ints[1]);
-
+                    } else if (line.startsWith("Score")) {
+                        int[] ints = Arrays.stream(line.replaceAll(" ", " ").split("[^-\\d]+"))
+                                .filter(s -> !s.matches(" ?"))
+                                .mapToInt(Integer::parseInt).toArray();
+                        System.out.println(Arrays.toString(ints));
+                        game.getScore().setPlayer1(ints[0]);
+                        game.getScore().setPlayer2(ints[1]);
                     }
 
                 } catch (IOException e) {

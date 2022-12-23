@@ -2,16 +2,17 @@ package ru.kpfu.itis.model;
 
 import ru.kpfu.itis.game.Game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class ServerBall implements Ball{
-    private int x = 300;
-    private int y = 400;
-    private final int RADIUS = 8;
-    private int xMove;
-    private int yMove;
-    private final int SPEED = -1;
+public class ServerBall implements Ball {
+    public int x = 300;
+    public int y = 400;
+    public final int RADIUS = 8;
+    public int xMove;
+    public int yMove;
+    public final int SPEED = -1;
     private int width;
     private int height;
 
@@ -20,7 +21,7 @@ public class ServerBall implements Ball{
     public Game game;
     private Score score;
 
-    public ServerBall(Game game,int width,int height,Score score) {
+    public ServerBall(Game game, int width, int height, Score score) {
         this.game = game;
         this.racket1 = game.getRacket1();
         this.racket2 = game.getRacket2();
@@ -45,29 +46,61 @@ public class ServerBall implements Ball{
             xMove *= SPEED;
             x += xMove;
         }
-        if (x < 0 ) {
+
+        y += yMove;
+
+        if (y < 0 || y > height || border.intersects(r1) || border.intersects(r2)) {
+            yMove *= SPEED;
+            y += yMove;
+        }
+
+        if (x < 0) {
             xMove *= SPEED;
             x += xMove;
             score.player2++;
         }
-        if(x > width - RADIUS * 2){
+        if (x > width - RADIUS * 2) {
             xMove *= SPEED;
             x += xMove;
             score.player1++;
         }
 
-        y += yMove;
-
-        if ( y < 0 || y > height || border.intersects(r1) || border.intersects(r2)) {
-            yMove *= SPEED;
-            y += yMove;
-        }
         try {
-            game.getServer().getOut().writeUTF("Ball "+ x +" "+ y + "\n" );
-        }catch (IOException e){
+            game.getServer().getOut().writeUTF("Ball " + x + " " + y + "\n");
+            game.getServer().getOut().writeUTF("Score " + score.player1 + " " + score.player2 + "\n");
+        } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
 
+    }
+
+    public void getScore() {
+        if (score.player1 == 5 || score.player2 == 5) {
+            if (score.player1 == 5) {
+                JOptionPane.showMessageDialog(null, "Winner is " + game.namePlayer1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Winner is " + game.namePlayer2);
+            }
+            String[] options = {"Continue", "Exit"};
+            int winOption = JOptionPane.showOptionDialog(null,
+                    "Please choose what you need",
+                    "Ping-pong game",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            switch (winOption) {
+                case (1):
+                    System.exit(0);
+                    break;
+                case (0):
+                    score.player1 = 0;
+                    score.player2 = 0;
+                    break;
+            }
+        }
     }
 
     @Override

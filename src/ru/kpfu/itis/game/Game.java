@@ -20,7 +20,9 @@ import javax.swing.*;
 public class Game implements Runnable {
     private final int PORT = 86;
 
-    String message;
+
+    public String namePlayer2;
+    public String namePlayer1;
 
     private GameFrame gameFrame;
     private final String title;
@@ -35,6 +37,7 @@ public class Game implements Runnable {
     public Racket racket2;
     public ServerBall serverBall;
     public ClientBall clientBall;
+
     public Score score;
 
 
@@ -89,8 +92,8 @@ public class Game implements Runnable {
         } else {
 //            clientBall.draw(graphics);
             serverBall.draw(graphics, Color.green);
-        }
 
+        }
 
         bufferStrategy.show();
         graphics.dispose();
@@ -129,14 +132,14 @@ public class Game implements Runnable {
                 System.exit(0);
                 break;
             case (1):
-                String namePlayer2 = inputName();
+                namePlayer2 = inputName();
                 status = 1;
                 paused = false;
                 client = new Client(null,PORT,this);
                 client.start();
                 break;
             case (0):
-                String namePlayer1= inputName();
+                namePlayer1= inputName();
                 status = 0;
                 paused = true;
                 server = new Server(PORT, this);
@@ -144,6 +147,7 @@ public class Game implements Runnable {
                 JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join");
                 break;
         }
+
     }
 
     public Racket getRacket() {
@@ -182,6 +186,10 @@ public class Game implements Runnable {
     public ClientBall getClientBall() {
 
         return clientBall;
+    }
+
+    public Score getScore() {
+        return score;
     }
 
     public String inputName() {
