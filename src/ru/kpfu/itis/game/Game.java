@@ -75,14 +75,14 @@ public class Game implements Runnable {
         racket1.draw(graphics, Color.red);
         racket2.draw(graphics, Color.blue);
 
-//        score.draw(graphics);
+        score.draw(graphics);
 
         if (status == 1) {
 //            serverBall.draw(graphics);
-            clientBall.draw(graphics, Color.YELLOW);
+            clientBall.draw(graphics, Color.green);
         } else {
 //            clientBall.draw(graphics);
-            serverBall.draw(graphics, Color.blue);
+            serverBall.draw(graphics, Color.green);
         }
 
 

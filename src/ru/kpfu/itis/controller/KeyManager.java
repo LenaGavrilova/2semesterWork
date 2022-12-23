@@ -1,6 +1,7 @@
 package ru.kpfu.itis.controller;
 
 import ru.kpfu.itis.game.Game;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -38,8 +39,8 @@ public class KeyManager implements KeyListener {
         }
 
         // обработчик для сервера
-        if(game.getStatus()==0) {
-            if(w) {
+        if (game.getStatus() == 0) {
+            if (w) {
                 try {
                     game.getServer().getOut().writeUTF("w\n");
                 } catch (IOException e) {
@@ -47,9 +48,23 @@ public class KeyManager implements KeyListener {
                 }
             }
 
-            if(s) {
+            if (s) {
                 try {
                     game.getServer().getOut().writeUTF("s\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+            if (up) {
+                try {
+                    game.getServer().getOut().writeUTF("up\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+            if (down) {
+                try {
+                    game.getServer().getOut().writeUTF("down\n");
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -57,9 +72,8 @@ public class KeyManager implements KeyListener {
         }
 
         //обработчик для клиента
-        if(game.getStatus()==1)
-        {
-            if(w) {
+        if (game.getStatus() == 1) {
+            if (w) {
                 try {
                     game.getClient().getOut().writeUTF("w\n");
                 } catch (IOException e) {
@@ -67,9 +81,23 @@ public class KeyManager implements KeyListener {
                 }
             }
 
-            if(s) {
+            if (s) {
                 try {
                     game.getClient().getOut().writeUTF("s\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+            if (up) {
+                try {
+                    game.getClient().getOut().writeUTF("up\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+            if (down) {
+                try {
+                    game.getClient().getOut().writeUTF("down\n");
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }
