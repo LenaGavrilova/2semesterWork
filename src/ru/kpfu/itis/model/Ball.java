@@ -4,7 +4,7 @@ import java.awt.*;
 
 public interface Ball {
 
-    public void tick();
+    void tick();
 
-    public void draw(Graphics graphics, Color c);
+    void draw(Graphics graphics, Color c);
 }
