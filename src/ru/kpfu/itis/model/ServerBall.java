@@ -1,29 +1,46 @@
 package ru.kpfu.itis.model;
 
+import ru.kpfu.itis.game.Game;
+
 import java.awt.*;
+import java.io.IOException;
 
 public class ServerBall implements Ball{
     private int x = 300;
     private int y = 400;
-    private final int radius = 5;
+    private final int RADIUS = 5;
     private int xMove;
     private int yMove;
-    private Racket racket1;
-    private Racket racket2;
     private final int SPEED = -1;
     private int width;
     private int height;
 
-    private Score score;
+    private Racket racket1;
+    private Racket racket2;
+    public Game game;
+    public Score score;
 
-    public ServerBall(Racket racket1, Racket racket2, int width, int height) {
-        this.racket1 = racket1;
-        this.racket2 = racket2;
-        this.width = width;
-        this.height = height;
+//    public ServerBall(Racket racket1, Racket racket2, int width, int height) {
+//        this.racket1 = racket1;
+//        this.racket2 = racket2;
+//        this.width = width;
+//        this.height = height;
+//        xMove = 7;
+//        yMove = 7;
+//        score = new Score(width, height);
+//    }
+
+    public ServerBall(Game game,int width,int height,Score score) {
+        this.game = game;
+        this.racket1 = game.getRacket1();
+        this.racket2 = game.getRacket2();
         xMove = 7;
         yMove = 7;
-        score = new Score(width, height);
+        this.width = width;
+     this.height = height;
+     score = new Score(width,height);
+
+
     }
 
     @Override
@@ -34,7 +51,7 @@ public class ServerBall implements Ball{
 
         x += xMove;
 
-        Rectangle border = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
+        Rectangle border = new Rectangle(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
 
         if (x < 0 || x > width || border.intersects(r1) || border.intersects(r2)) {
             xMove *= SPEED;
@@ -51,15 +68,21 @@ public class ServerBall implements Ball{
             score.player2++;
             System.out.println(score.player1 + " " + score.player2);
         }
-        if (x >= width - radius * 2) {
-            score.player1++;
-            System.out.println(score.player1 + " " + score.player2);
+//        if (x >= width - RADIUS * 2) {
+//            score.player1++;
+//            System.out.println(score.player1 + " " + score.player2);
+//        }
+        try {
+            game.getServer().getOut().writeUTF("Ball "+ x +" "+ y + "\n" );
+        }catch (IOException e){
+            throw new IllegalArgumentException(e);
         }
+
     }
 
     @Override
     public void draw(Graphics graphics, Color c) {
         graphics.setColor(c);
-        graphics.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
+        graphics.fillOval(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
     }
 }

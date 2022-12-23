@@ -23,24 +23,24 @@ public class Game implements Runnable {
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
 
-    private KeyManager keyManager;
+    public KeyManager keyManager;
 
-    private Racket racket1;
-    private Racket racket2;
-    private ServerBall serverBall;
-    private ClientBall clientBall;
-    private Score score;
+    public Racket racket1;
+    public Racket racket2;
+    public ServerBall serverBall;
+    public ClientBall clientBall;
+    public Score score;
 
 
-    Server server;
-    Client client;
+    public Server server;
+    public Client client;
 
     private boolean isRunning;
-    private Thread thread;
+    public Thread thread;
 
 
-    private int status = -1;
-    public boolean paused;
+    public int status = -1;
+    private boolean paused;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -75,7 +75,7 @@ public class Game implements Runnable {
         racket1.draw(graphics, Color.red);
         racket2.draw(graphics, Color.blue);
 
-        score.draw(graphics);
+//        score.draw(graphics);
 
         if (status == 1) {
 //            serverBall.draw(graphics);
@@ -103,7 +103,7 @@ public class Game implements Runnable {
 
         racket1 = new Racket(0, 0, 25, 200, height);
         racket2 = new Racket(775, 0, 25, 200, height);
-        serverBall = new ServerBall(racket1, racket2, width, height);
+        serverBall = new ServerBall(this,width,height,score);
         clientBall = new ClientBall();
 
 
@@ -154,6 +154,14 @@ public class Game implements Runnable {
 
     public int getStatus() {
         return status;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     public ServerBall getServerBall() {

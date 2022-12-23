@@ -45,6 +45,6 @@ public class Racket {
     }
 
     public void move(){
-        y = y + ySpeed;
+        y += ySpeed;
     }
 }

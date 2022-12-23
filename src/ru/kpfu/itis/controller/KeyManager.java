@@ -3,11 +3,15 @@ package ru.kpfu.itis.controller;
 import ru.kpfu.itis.game.Game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 public class KeyManager implements KeyListener {
     private Game game;
     private final boolean[] KEYS;
-    public boolean up, down, w, s;
+    public boolean up;
+    public boolean down;
+    public boolean w;
+    public boolean s;
 
     public KeyManager(Game game) {
         this.game = game;
@@ -31,6 +35,45 @@ public class KeyManager implements KeyListener {
         }
         if (s) {
             game.getRacket().moveDown();
+        }
+
+        // обработчик для сервера
+        if(game.getStatus()==0) {
+            if(w) {
+                try {
+                    game.getServer().getOut().writeUTF("w\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+
+            if(s) {
+                try {
+                    game.getServer().getOut().writeUTF("s\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        }
+
+        //обработчик для клиента
+        if(game.getStatus()==1)
+        {
+            if(w) {
+                try {
+                    game.getClient().getOut().writeUTF("w\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+
+            if(s) {
+                try {
+                    game.getClient().getOut().writeUTF("s\n");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
         }
 
     }

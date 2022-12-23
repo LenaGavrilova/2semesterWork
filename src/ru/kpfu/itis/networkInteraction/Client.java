@@ -10,12 +10,12 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class Client implements Runnable {
-    private String ipAddress;
-    private int port;
-    private Game game;
+    public String ipAddress;
+    public int port;
+    public Game game;
 
     private boolean isRunning;
-    private Thread thread;
+    public Thread thread;
 
     private Socket socket = null;
     private DataInputStream inputStream = null;
@@ -32,7 +32,7 @@ public class Client implements Runnable {
         return socket;
     }
 
-    public DataOutputStream getOutputStream() {
+    public DataOutputStream getOut() {
         return outputStream;
     }
 
@@ -42,14 +42,16 @@ public class Client implements Runnable {
         while (isRunning) {
             try {
                 socket = new Socket(ipAddress, port);
+                System.out.println("Connected");
                 inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                //отправляем данные в сокет
                 outputStream = new DataOutputStream(socket.getOutputStream());
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
             }
 
             String line = "";
-
+            //читаем сообщение из клиента
             while (!line.equals("Over")) {
                 game.tick();
                 game.draw();
@@ -77,7 +79,7 @@ public class Client implements Runnable {
                     throw new IllegalArgumentException(e);
                 }
             }
-
+            System.out.println("Closing connection");
             try {
                 inputStream.close();
                 outputStream.close();

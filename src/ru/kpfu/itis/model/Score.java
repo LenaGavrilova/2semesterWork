@@ -3,10 +3,10 @@ package ru.kpfu.itis.model;
 import java.awt.*;
 
 public class Score {
-    static int GAME_WIDTH;
-    static int GAME_HEIGHT;
-    int player1;
-    int player2;
+    public static int GAME_WIDTH;
+    public static int GAME_HEIGHT;
+    public int player1;
+    public int player2;
 
     public Score(int gameWidth, int gameHeight) {
         Score.GAME_WIDTH = gameWidth;

@@ -9,7 +9,6 @@ public class ClientBall implements Ball {
 
     @Override
     public void tick() {
-
     }
 
     @Override

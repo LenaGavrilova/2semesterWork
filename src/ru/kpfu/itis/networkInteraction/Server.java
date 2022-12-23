@@ -11,17 +11,17 @@ import java.net.Socket;
 
 public class Server implements Runnable {
 
-    int port;
-    Game game;
-    String line;
+    public int port;
+    public Game game;
+    public String line;
 
-    public boolean keepRunning;
+    private boolean keepRunning;
     public Thread thread;
 
-    private Socket socket;
-    private ServerSocket server;
-    private DataInputStream in;
-    private DataOutputStream out;
+    private Socket socket = null;
+    private ServerSocket server = null;
+    private DataInputStream in = null;
+    private DataOutputStream out = null;
 
     public Server(int port, Game game) {
         this.port = port;
@@ -37,13 +37,17 @@ public class Server implements Runnable {
         while (keepRunning) {
             try {
                 server = new ServerSocket(port);
+                System.out.println("Server started");
+                System.out.println("Waiting for a client ...");
                 socket = server.accept();
+                System.out.println("Client accepted");
                 game.play();
-
+//получаем данные из клиентского сокета
                 in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 out = new DataOutputStream(socket.getOutputStream());
 
-                line = "";
+                 String line = "";
+                //читаем сообщение из клиента
                 while (!line.equals("Over")) {
                     try {
                         line = in.readUTF();
@@ -60,6 +64,7 @@ public class Server implements Runnable {
                         throw new IllegalStateException(ex);
                     }
                 }
+                System.out.println("Closing connection");
                 try {
                     in.close();
                     out.close();
