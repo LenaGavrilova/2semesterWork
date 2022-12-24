@@ -21,10 +21,6 @@ import javax.swing.*;
 public class Game implements Runnable {
     private final int PORT = 86;
 
-
-    public String namePlayer2;
-    public String namePlayer1;
-
     public Color color1;
     public Color color2;
 
@@ -51,13 +47,12 @@ public class Game implements Runnable {
     private boolean isRunning;
     public Thread thread;
 
-    private String messageName = "Input your name: ";
     private String messageIP= "Input IP address to start game: ";
     private String ip;
 
 
     public int status = -1;
-    private boolean paused;
+    public boolean paused;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -136,7 +131,6 @@ public class Game implements Runnable {
                 break;
             case (1):
                 color1 = setBallColor();
-                namePlayer2 = inputData(messageName);
                 ip = inputData(messageIP);
                 status = 1;
                 paused = false;
@@ -145,7 +139,6 @@ public class Game implements Runnable {
                 break;
             case (0):
                 color2 = setBallColor();
-                namePlayer1= inputData(messageName);
                 status = 0;
                 paused = true;
                 server = new Server(PORT, this);
@@ -153,9 +146,35 @@ public class Game implements Runnable {
                 JOptionPane.showMessageDialog(gameFrame.getFrame(),"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " +  getIP());
                 break;
         }
-
     }
 
+    public void showResult(String message) throws IOException {
+        String[] options = {"Continue", "Exit"};
+        int winOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
+                message,
+                "Ping-pong game",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        switch (winOption) {
+            case (1):
+//                server.getOut().writeUTF("Over");
+                System.exit(0);
+                break;
+            case (0):
+//                gameFrame.getFrame().setVisible(false);
+//                Game game = new Game("Game",800,600);
+//                game.start();
+                paused=false;
+                score.player1=0;
+                score.player2=0;
+                break;
+        }
+
+    }
     public String getIP() {
         String address;
         try {

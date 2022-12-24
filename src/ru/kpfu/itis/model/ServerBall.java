@@ -1,8 +1,6 @@
 package ru.kpfu.itis.model;
 
 import ru.kpfu.itis.game.Game;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
@@ -65,19 +63,22 @@ public class ServerBall implements Ball {
             score.player1++;
         }
 
-        if(score.player2 == 1) {
+        if(score.player2 > 4) {
             try {
+                game.paused=true;
                 game.getServer().getOut().writeUTF("You win!");
-                System.out.println("you lose");
+                game.showResult("You lose!");
+
             } catch (IOException ex){
                 throw new IllegalArgumentException(ex);
             }
         }
 
-        if(score.player1 == 1) {
+        if(score.player1 > 4) {
             try{
+                game.paused=true;
                 game.getServer().getOut().writeUTF("You lose!");
-                System.out.println("you win");
+                game.showResult("You win!");
             } catch (IOException ex){
                 throw new IllegalArgumentException(ex);
             }

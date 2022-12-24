@@ -36,4 +36,5 @@ public class Score {
         g.drawString(String.valueOf(player1), (GAME_WIDTH/2) - 85 , 50);
         g.drawString(String.valueOf(player2), (GAME_WIDTH/2) + 20 , 50);
     }
+
 }

@@ -73,15 +73,10 @@ public class Client implements Runnable {
                         String[] ints = line.split(" ");
                         game.getScore().setPlayer1(Integer.parseInt(ints[1]));
                         game.getScore().setPlayer2(Integer.parseInt(ints[2]));
-//                    } else if(line.startsWith("Winner")) {
-//                        String[] parts = line.split(" ");
-//                        System.out.println(parts[0]);
-//                        System.out.println(parts[1]);
-//                    }
                     }else if(line.startsWith("You win!")){
-                        System.out.println(line);
+                        game.showResult(line);
                     } else if(line.startsWith("You lose!")){
-                        System.out.println(line);
+                        game.showResult(line);
                     }
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
