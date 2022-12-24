@@ -150,7 +150,7 @@ public class Game implements Runnable {
                 paused = true;
                 server = new Server(PORT, this);
                 server.start();
-                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + InetAddress.getLocalHost());
+                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " +  InetAddress.getLocalHost());
                 break;
         }
         System.out.println(server.getSocket().getInetAddress().getHostAddress());
