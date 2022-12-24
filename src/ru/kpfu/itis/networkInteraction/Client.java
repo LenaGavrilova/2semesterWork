@@ -67,21 +67,18 @@ public class Client implements Runnable {
                     } else if (line.startsWith("down")) {
                         game.getRacket2().moveDown();
                     } else if (line.startsWith("Ball")) {
-                        int[] ints = Arrays.stream(line.replaceAll(" ", " ").split("[^-\\d]+"))
-                                .filter(s -> !s.matches(" ?"))
-                                .mapToInt(Integer::parseInt).toArray();
-                        System.out.println(Arrays.toString(ints));
-                        game.getClientBall().setX(ints[0]);
-                        game.getClientBall().setY(ints[1]);
+                        String[] ints = line.split(" ");
+                        game.getClientBall().setX(Integer.parseInt(ints[1]));
+                        game.getClientBall().setY(Integer.parseInt(ints[2]));
                     } else if (line.startsWith("Score")) {
-                        int[] ints = Arrays.stream(line.replaceAll(" ", " ").split("[^-\\d]+"))
-                                .filter(s -> !s.matches(" ?"))
-                                .mapToInt(Integer::parseInt).toArray();
-                        System.out.println(Arrays.toString(ints));
-                        game.getScore().setPlayer1(ints[0]);
-                        game.getScore().setPlayer2(ints[1]);
+                        String[] ints = line.split(" ");
+                        game.getScore().setPlayer1(Integer.parseInt(ints[1]));
+                        game.getScore().setPlayer2(Integer.parseInt(ints[2]));
+                    } else if(line.startsWith("Winner")) {
+                        String[] parts = line.split(" ");
+                        System.out.println(parts[0]);
+                        System.out.println(parts[1]);
                     }
-
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }

@@ -65,42 +65,30 @@ public class ServerBall implements Ball {
             score.player1++;
         }
 
+//        if(score.player2 == 5) {
+//            try{
+//                game.getServer().getOut().writeUTF("Winner " + game.namePlayer2);
+//            } catch (IOException ex){
+//                throw new IllegalArgumentException(ex);
+//            }
+//        }
+
+//        if(score.player1 == 5) {
+//            try{
+//                game.getServer().getOut().writeUTF("Winner " + game.namePlayer1);
+//            } catch (IOException ex){
+//                throw new IllegalArgumentException(ex);
+//            }
+//        }
+
+
         try {
-            game.getServer().getOut().writeUTF("Ball " + x + " " + y + "\n");
-            game.getServer().getOut().writeUTF("Score " + score.player1 + " " + score.player2 + "\n");
+            game.getServer().getOut().writeUTF("Ball " + x + " " + y);
+            game.getServer().getOut().writeUTF("Score " + score.player1 + " " + score.player2);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
 
-    }
-
-    public void getScore() {
-        if (score.player1 == 5 || score.player2 == 5) {
-            if (score.player1 == 5) {
-                JOptionPane.showMessageDialog(null, "Winner is " + game.namePlayer1);
-            } else {
-                JOptionPane.showMessageDialog(null, "Winner is " + game.namePlayer2);
-            }
-            String[] options = {"Continue", "Exit"};
-            int winOption = JOptionPane.showOptionDialog(null,
-                    "Please choose what you need",
-                    "Ping-pong game",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-
-            switch (winOption) {
-                case (1):
-                    System.exit(0);
-                    break;
-                case (0):
-                    score.player1 = 0;
-                    score.player2 = 0;
-                    break;
-            }
-        }
     }
 
     @Override
