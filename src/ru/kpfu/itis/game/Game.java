@@ -52,7 +52,7 @@ public class Game implements Runnable {
     public Thread thread;
 
     private String messageName = "Input your name: ";
-    private String messageIP= "Input your IP addrres to start game: ";
+    private String messageIP= "Input IP address to start game: ";
     private String ip;
 
 
@@ -211,15 +211,13 @@ public class Game implements Runnable {
 
     public String inputData(String message) {
         String data =  JOptionPane.showInputDialog(gameFrame.getFrame(),message);
-        if (data.length() != 0) {
-            return data;
-        } else {
+        if (data.length() == 0) {
             while (data.length() == 0) {
-                data = JOptionPane.showInputDialog(gameFrame.getFrame(),message);
+                data = JOptionPane.showInputDialog(gameFrame.getFrame(), message);
             }
-            return data;
 
         }
+        return data;
     }
 
 
