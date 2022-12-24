@@ -1,45 +1,52 @@
 package ru.kpfu.itis.game;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-import ru.kpfu.itis.controller.KeyManager;
-import ru.kpfu.itis.model.ClientBall;
-import ru.kpfu.itis.model.Racket;
-import ru.kpfu.itis.model.Score;
-import ru.kpfu.itis.model.ServerBall;
-import ru.kpfu.itis.networkInteraction.Client;
-import ru.kpfu.itis.networkInteraction.Server;
-import ru.kpfu.itis.view.GameFrame;
+import ru.kpfu.itis.listener.KeyManager;
+import ru.kpfu.itis.gui.entities.ClientBall;
+import ru.kpfu.itis.gui.entities.Racket;
+import ru.kpfu.itis.gui.entities.Score;
+import ru.kpfu.itis.gui.entities.ServerBall;
+import ru.kpfu.itis.network.Client;
+import ru.kpfu.itis.network.Server;
+import ru.kpfu.itis.gui.GameFrame;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.*;
 
 public class Game implements Runnable {
+
     private final int PORT = 86;
 
-    public Color color1;
-    public Color color2;
-
     private GameFrame gameFrame;
-    private final String title;
-    private final int width;
-    private final int height;
+    private final String TITLE = "PING PONG";
+    private final int WIDTH = 800;
+    private final int HEIGHT = 600;
+
+    private final int RACKET_WIDTH = 25;
+    private final int RACKET_HEIGHT = 200;
+
+    private final String[] WELCOME_OPTIONS = {"Start game!", "Join game!"};
+    private final String[] RESULT_OPTIONS = {"Continue", "Exit"};
+    private final String WELCOME_MESSAGE = "Please choose what you need";
+    private final String SERVER_MESSAGE = "Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " + getIP();
+    private final String CLIENT_MESSAGE = "Input IP address to start game: ";
+
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
 
-    public KeyManager keyManager;
+    private KeyManager keyManager;
 
-    public Racket racket1;
-    public Racket racket2;
+    private Color color1;
+    private Color color2;
+
+    public Racket clientRacket;
+    public Racket serverRacket;
     public ServerBall serverBall;
     public ClientBall clientBall;
-
     public Score score;
-
 
     public Server server;
     public Client client;
@@ -47,25 +54,21 @@ public class Game implements Runnable {
     private boolean isRunning;
     public Thread thread;
 
-    private String messageIP= "Input IP address to start game: ";
     private String ip;
 
-
-    public int status = -1;
+    private int status = -1;
     public boolean paused;
 
-    public Game(String title, int width, int height) {
-        this.title = title;
-        this.width = width;
-        this.height = height;
+    public Game() {
+        start();
     }
 
-    public void tick() {
-        keyManager.tick();
+    public void redraw() {
+        keyManager.redraw();
         if (status == 1) {
-            clientBall.tick();
+            clientBall.redraw();
         } else {
-            serverBall.tick();
+            serverBall.redraw();
         }
     }
 
@@ -79,63 +82,43 @@ public class Game implements Runnable {
 
         graphics = bufferStrategy.getDrawGraphics();
 
-        graphics.clearRect(0, 0, width, height);
-
-        racket1.draw(graphics, Color.red);
-        racket2.draw(graphics, Color.blue);
-
+        graphics.clearRect(0, 0, WIDTH, HEIGHT);
+        clientRacket.draw(graphics, Color.red);
+        serverRacket.draw(graphics, Color.blue);
         score.draw(graphics);
 
         if (status == 1) {
             clientBall.draw(graphics, color1);
         } else {
             serverBall.draw(graphics, color2);
-
         }
-
         bufferStrategy.show();
         graphics.dispose();
-
     }
 
-    public void init() throws UnknownHostException {
-
-        gameFrame = new GameFrame(title, width, height);
-
-        score = new Score(width, height);
-
+    public void init() {
+        gameFrame = new GameFrame(TITLE, WIDTH, HEIGHT);
+        score = new Score(WIDTH, HEIGHT);
         keyManager = new KeyManager(this);
-
         gameFrame.getFrame().addKeyListener(keyManager);
 
-        racket1 = new Racket(0, 0, 25, 200, height);
-        racket2 = new Racket(775, 0, 25, 200, height);
-        serverBall = new ServerBall(this,width,height,score);
+        clientRacket = new Racket(0, (HEIGHT / 2) - (RACKET_HEIGHT / 2), RACKET_WIDTH, RACKET_HEIGHT, HEIGHT);
+        serverRacket = new Racket(WIDTH - RACKET_WIDTH, (HEIGHT / 2) - (RACKET_HEIGHT / 2), RACKET_WIDTH, RACKET_HEIGHT, HEIGHT);
+        serverBall = new ServerBall(this, WIDTH, HEIGHT, score);
         clientBall = new ClientBall();
 
-
-
-        String[] options = {"Start game!", "Join game!"};
-        int welcomeOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
-                "Please choose what you need",
-                "Ping-pong game",
+        int chosenOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
+                WELCOME_MESSAGE,
+                TITLE,
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                options,
-                options[0]);
+                WELCOME_OPTIONS,
+                WELCOME_OPTIONS[0]);
 
-        switch (welcomeOption) {
+        switch (chosenOption) {
             case (-1):
                 System.exit(0);
-                break;
-            case (1):
-                color1 = setBallColor();
-                ip = inputData(messageIP);
-                status = 1;
-                paused = false;
-                client = new Client(ip,PORT,this);
-                client.start();
                 break;
             case (0):
                 color2 = setBallColor();
@@ -143,38 +126,95 @@ public class Game implements Runnable {
                 paused = true;
                 server = new Server(PORT, this);
                 server.start();
-                JOptionPane.showMessageDialog(gameFrame.getFrame(),"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " +  getIP());
+                JOptionPane.showMessageDialog(gameFrame.getFrame(), SERVER_MESSAGE);
+                break;
+            case (1):
+                color1 = setBallColor();
+                ip = inputData(CLIENT_MESSAGE);
+                status = 1;
+                paused = false;
+                client = new Client(ip, PORT, this);
+                client.start();
                 break;
         }
     }
 
     public void showResult(String message) throws IOException {
-        String[] options = {"Continue", "Exit"};
-        int winOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
+        int chosenOption = JOptionPane.showOptionDialog(gameFrame.getFrame(),
                 message,
-                "Ping-pong game",
+                TITLE,
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                options,
-                options[0]);
-
-        switch (winOption) {
+                RESULT_OPTIONS,
+                RESULT_OPTIONS[0]);
+        switch (chosenOption) {
             case (1):
-//                server.getOut().writeUTF("Over");
                 System.exit(0);
                 break;
             case (0):
-//                gameFrame.getFrame().setVisible(false);
-//                Game game = new Game("Game",800,600);
-//                game.start();
-                paused=false;
-                score.player1=0;
-                score.player2=0;
+                play();
+                score.player1 = 0;
+                score.player2 = 0;
                 break;
         }
-
     }
+
+    public String inputData(String message) {
+        String data = JOptionPane.showInputDialog(gameFrame.getFrame(), message);
+        while (data.length() == 0) {
+            data = JOptionPane.showInputDialog(gameFrame.getFrame(), message);
+        }
+        return data;
+    }
+
+
+    public Color setBallColor() {
+        return JColorChooser.showDialog(gameFrame.getFrame(), "Choose ball color", Color.green);
+    }
+
+    @Override
+    public void run() {
+        init();
+
+        double fps = 60;
+        double timePeriodRedrawing = 1000000000 / fps;
+        double delta = 0;
+        double now;
+        double lastTime = System.nanoTime();
+
+        while (isRunning) {
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePeriodRedrawing;
+            lastTime = now;
+            if (delta >= 1) {
+                if (!paused) {
+                    redraw();
+                }
+                draw();
+                delta--;
+            }
+        }
+    }
+
+    public synchronized void start() {
+        if (isRunning) {
+            return;
+        } else {
+            isRunning = true;
+        }
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public void play() {
+        paused = false;
+    }
+
+    public void gamePaused() {
+        paused = true;
+    }
+
     public String getIP() {
         String address;
         try {
@@ -188,18 +228,18 @@ public class Game implements Runnable {
 
     public Racket getRacket() {
         if (status == 1) {
-            return getRacket1();
+            return getClientRacket();
         } else {
-            return getRacket2();
+            return getServerRacket();
         }
     }
 
-    public Racket getRacket1() {
-        return racket1;
+    public Racket getClientRacket() {
+        return clientRacket;
     }
 
-    public Racket getRacket2() {
-        return racket2;
+    public Racket getServerRacket() {
+        return serverRacket;
     }
 
     public int getStatus() {
@@ -214,92 +254,11 @@ public class Game implements Runnable {
         return client;
     }
 
-    public ServerBall getServerBall() {
-
-        return serverBall;
-    }
-
     public ClientBall getClientBall() {
-
         return clientBall;
     }
 
     public Score getScore() {
         return score;
-    }
-
-    public String inputData(String message) {
-        String data =  JOptionPane.showInputDialog(gameFrame.getFrame(),message);
-            while (data.length() == 0) {
-                data = JOptionPane.showInputDialog(gameFrame.getFrame(), message);
-
-        }
-        return data;
-    }
-
-
-
-    public Color setBallColor() {
-        return  JColorChooser.showDialog(gameFrame.getFrame(), "Choose ball color", Color.green);
-    }
-
-    @Override
-    public void run() {
-
-        try {
-            init();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        double fps = 60;
-        double timePeriodTick = 1000000000 / fps;
-        double delta = 0;
-        double now;
-        double lastTime = System.nanoTime();
-
-        while (isRunning) {
-            now = System.nanoTime();
-            delta += (now - lastTime) / timePeriodTick;
-            lastTime = now;
-
-            if (delta >= 1) {
-                if (!paused) {
-                    tick();
-                }
-                draw();
-                delta--;
-            }
-        }
-    }
-
-    public synchronized void start() {
-        if (isRunning) {
-            return;
-        } else {
-            isRunning = true;
-        }
-
-        thread = new Thread(this);
-        thread.start();
-    }
-
-    public synchronized void stop() {
-
-        if (!isRunning) {
-            return;
-        } else {
-            isRunning = false;
-        }
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public void play() {
-        paused = false;
     }
 }

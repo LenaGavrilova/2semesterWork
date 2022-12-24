@@ -1,4 +1,4 @@
-package ru.kpfu.itis.model;
+package ru.kpfu.itis.gui.entities;
 
 import java.awt.*;
 
@@ -7,14 +7,7 @@ public class Score {
     public static int GAME_HEIGHT;
     public int player1;
     public int player2;
-
-    public int getPlayer1() {
-        return player1;
-    }
-
-    public int getPlayer2() {
-        return player2;
-    }
+    private final Font FONT = new Font("Consolas", Font.PLAIN, 60);
 
     public void setPlayer1(int player1) {
         this.player1 = player1;
@@ -31,10 +24,9 @@ public class Score {
 
     public void draw(Graphics g) {
         g.setColor(Color.black);
-        g.setFont(new Font("Consolas", Font.PLAIN, 60));
-        g.drawLine(GAME_WIDTH/2, 0, GAME_WIDTH/2, GAME_HEIGHT);
-        g.drawString(String.valueOf(player1), (GAME_WIDTH/2) - 85 , 50);
-        g.drawString(String.valueOf(player2), (GAME_WIDTH/2) + 20 , 50);
+        g.setFont(FONT);
+        g.drawLine(GAME_WIDTH / 2, 0, GAME_WIDTH / 2, GAME_HEIGHT);
+        g.drawString(String.valueOf(player1), (GAME_WIDTH / 2) - 85 , 50);
+        g.drawString(String.valueOf(player2), (GAME_WIDTH / 2) + 20 , 50);
     }
-
 }

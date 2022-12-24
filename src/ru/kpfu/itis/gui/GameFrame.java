@@ -1,4 +1,4 @@
-package ru.kpfu.itis.view;
+package ru.kpfu.itis.gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,9 +24,7 @@ public class GameFrame {
         frame = new JFrame(TITLE);
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //чтобы не менялся размер
         frame.setResizable(false);
-        //чтобы в центре было
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -39,6 +37,7 @@ public class GameFrame {
         frame.add(canvas);
         frame.pack();
     }
+
     public Canvas getCanvas() {
         return canvas;
     }

@@ -1,4 +1,4 @@
-package ru.kpfu.itis.model;
+package ru.kpfu.itis.gui.entities;
 
 import java.awt.*;
 
@@ -8,7 +8,7 @@ public class ClientBall implements Ball {
     private final int RADIUS = 8;
 
     @Override
-    public void tick() {
+    public void redraw() {
     }
 
     @Override
@@ -20,17 +20,7 @@ public class ClientBall implements Ball {
     public void setX(int x) {
         this.x = x;
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public void setY(int y) {
         this.y = y;
     }
-
 }

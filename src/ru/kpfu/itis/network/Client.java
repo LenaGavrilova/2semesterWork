@@ -1,4 +1,4 @@
-package ru.kpfu.itis.networkInteraction;
+package ru.kpfu.itis.network;
 
 import ru.kpfu.itis.game.Game;
 
@@ -24,11 +24,6 @@ public class Client implements Runnable {
         this.ipAddress = ipAddress;
         this.port = port;
         this.game = game;
-
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public DataOutputStream getOut() {
@@ -37,34 +32,30 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-
         while (isRunning) {
             try {
                 socket = new Socket(ipAddress, port);
                 System.out.println("Connected");
                 inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                //отправляем данные в сокет
                 outputStream = new DataOutputStream(socket.getOutputStream());
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
             }
 
             String line = "";
-            //читаем сообщение из клиента
             while (!line.equals("Over")) {
-//                System.out.println(line);
-                game.tick();
+                game.redraw();
                 game.draw();
                 try {
                     line = inputStream.readUTF();
                     if (line.startsWith("w")) {
-                        game.getRacket2().moveUp();
+                        game.getServerRacket().moveUp();
                     } else if (line.startsWith("s")) {
-                        game.getRacket2().moveDown();
+                        game.getServerRacket().moveDown();
                     } else if (line.startsWith("up")) {
-                        game.getRacket2().moveUp();
+                        game.getServerRacket().moveUp();
                     } else if (line.startsWith("down")) {
-                        game.getRacket2().moveDown();
+                        game.getServerRacket().moveDown();
                     } else if (line.startsWith("Ball")) {
                         String[] ints = line.split(" ");
                         game.getClientBall().setX(Integer.parseInt(ints[1]));
@@ -73,9 +64,9 @@ public class Client implements Runnable {
                         String[] ints = line.split(" ");
                         game.getScore().setPlayer1(Integer.parseInt(ints[1]));
                         game.getScore().setPlayer2(Integer.parseInt(ints[2]));
-                    }else if(line.startsWith("You win!")){
+                    }else if(line.startsWith("YOU WIN!")){
                         game.showResult(line);
-                    } else if(line.startsWith("You lose!")){
+                    } else if(line.startsWith("YOU LOSE!")){
                         game.showResult(line);
                     }
                 } catch (IOException e) {
@@ -92,34 +83,15 @@ public class Client implements Runnable {
                 throw new IllegalArgumentException(e);
             }
         }
-
     }
 
     public synchronized void start() {
-
         if (isRunning) {
             return;
         } else {
             isRunning = true;
         }
-
         thread = new Thread(this);
         thread.start();
     }
-
-    public synchronized void stop() {
-
-        if (!isRunning) {
-            return;
-        } else {
-            isRunning = false;
-        }
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

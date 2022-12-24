@@ -1,4 +1,4 @@
-package ru.kpfu.itis.model;
+package ru.kpfu.itis.gui.entities;
 
 import java.awt.*;
 
@@ -7,8 +7,8 @@ public class Racket {
     public int y;
     public int racketWidth;
     public int racketHeight;
-    public int ySpeed;
-    private int screenHeight;
+    private int ySpeed;
+    private final int SCREEN_HEIGHT;
     private final int SPEED = 10;
 
     public Racket(int x, int y, int racketWidth, int racketHeight, int screenHeight) {
@@ -16,12 +16,10 @@ public class Racket {
         this.y = y;
         this.racketWidth = racketWidth;
         this.racketHeight = racketHeight;
-        this.screenHeight = screenHeight;
+        this.SCREEN_HEIGHT = screenHeight;
     }
 
-
     public void draw(Graphics g, Color c) {
-        //сделать чтобы клиент передвал цвет
         g.setColor(c);
         g.fillRect(x, y, racketWidth, racketHeight);
     }
@@ -34,7 +32,7 @@ public class Racket {
     }
 
     public  void moveDown() {
-        if (y + SPEED + racketHeight <= screenHeight) {
+        if (y + SPEED + racketHeight <= SCREEN_HEIGHT) {
             setY(SPEED);
             move();
         }

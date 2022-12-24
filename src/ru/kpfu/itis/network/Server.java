@@ -1,4 +1,4 @@
-package ru.kpfu.itis.networkInteraction;
+package ru.kpfu.itis.network;
 
 import ru.kpfu.itis.game.Game;
 
@@ -42,23 +42,22 @@ public class Server implements Runnable {
                 socket = server.accept();
                 System.out.println("Client accepted");
                 game.play();
-//получаем данные из клиентского сокета
                 in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 out = new DataOutputStream(socket.getOutputStream());
 
                 String line = "";
-                //читаем сообщение из клиента
+
                 while (!line.equals("Over")) {
                     try {
                         line = in.readUTF();
                         if (line.startsWith("w")) {
-                            game.getRacket1().moveUp();
+                            game.getClientRacket().moveUp();
                         } else if (line.startsWith("s")) {
-                            game.getRacket1().moveDown();
+                            game.getClientRacket().moveDown();
                         } else if (line.startsWith("up")) {
-                            game.getRacket1().moveUp();
+                            game.getClientRacket().moveUp();
                         } else if (line.startsWith("down")) {
-                            game.getRacket1().moveDown();
+                            game.getClientRacket().moveDown();
                         }
                     } catch (IOException ex) {
                         throw new IllegalStateException(ex);
@@ -77,11 +76,6 @@ public class Server implements Runnable {
                 throw new IllegalStateException(ex);
             }
         }
-
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public synchronized void start() {
@@ -92,18 +86,5 @@ public class Server implements Runnable {
         }
         thread = new Thread(this);
         thread.start();
-    }
-
-    public synchronized void stop() {
-        if (!keepRunning) {
-            return;
-        } else {
-            keepRunning = false;
-        }
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
     }
 }
