@@ -9,10 +9,10 @@ import java.io.IOException;
 public class KeyManager implements KeyListener {
     private final Game GAME;
     private final boolean[] KEYS;
-    public boolean up;
-    public boolean down;
-    public boolean w;
-    public boolean s;
+    private boolean up;
+    private boolean down;
+    private boolean w;
+    private boolean s;
 
     public KeyManager(Game game) {
         this.GAME = game;
@@ -122,4 +122,43 @@ public class KeyManager implements KeyListener {
         KEYS[e.getKeyCode()] = false;
     }
 
+    public Game getGAME() {
+        return GAME;
+    }
+
+    public boolean[] getKEYS() {
+        return KEYS;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public boolean isW() {
+        return w;
+    }
+
+    public void setW(boolean w) {
+        this.w = w;
+    }
+
+    public boolean isS() {
+        return s;
+    }
+
+    public void setS(boolean s) {
+        this.s = s;
+    }
 }

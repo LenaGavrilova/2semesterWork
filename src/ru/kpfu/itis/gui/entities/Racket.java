@@ -3,10 +3,10 @@ package ru.kpfu.itis.gui.entities;
 import java.awt.*;
 
 public class Racket {
-    public int x;
-    public int y;
-    public int racketWidth;
-    public int racketHeight;
+    private int x;
+    private int y;
+    private int racketWidth;
+    private int racketHeight;
     private int ySpeed;
     private final int SCREEN_HEIGHT;
     private final int SPEED = 10;
@@ -38,11 +38,55 @@ public class Racket {
         }
     }
 
+    public void move(){
+        y += ySpeed;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public void setY(int y) {
         ySpeed = y;
     }
 
-    public void move(){
-        y += ySpeed;
+    public int getRacketWidth() {
+        return racketWidth;
+    }
+
+    public void setRacketWidth(int racketWidth) {
+        this.racketWidth = racketWidth;
+    }
+
+    public int getRacketHeight() {
+        return racketHeight;
+    }
+
+    public void setRacketHeight(int racketHeight) {
+        this.racketHeight = racketHeight;
+    }
+
+    public int getySpeed() {
+        return ySpeed;
+    }
+
+    public void setySpeed(int ySpeed) {
+        this.ySpeed = ySpeed;
+    }
+
+    public int getSCREEN_HEIGHT() {
+        return SCREEN_HEIGHT;
+    }
+
+    public int getSPEED() {
+        return SPEED;
     }
 }

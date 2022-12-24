@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Client implements Runnable {
-    public String ipAddress;
-    public int port;
-    public Game game;
+    private String ipAddress;
+    private int port;
+    private Game game;
 
     private boolean isRunning;
-    public Thread thread;
+    private Thread thread;
 
     private Socket socket = null;
     private DataInputStream inputStream = null;
@@ -93,5 +93,69 @@ public class Client implements Runnable {
         }
         thread = new Thread(this);
         thread.start();
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public DataInputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(DataInputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    public DataOutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public void setOutputStream(DataOutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 }

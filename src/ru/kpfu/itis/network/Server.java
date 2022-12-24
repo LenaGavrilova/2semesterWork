@@ -11,12 +11,12 @@ import java.net.Socket;
 
 public class Server implements Runnable {
 
-    public int port;
-    public Game game;
-    public String line;
+    private int port;
+    private Game game;
+    private String line;
 
     private boolean keepRunning;
-    public Thread thread;
+    private Thread thread;
 
     private Socket socket = null;
     private ServerSocket server = null;
@@ -86,5 +86,73 @@ public class Server implements Runnable {
         }
         thread = new Thread(this);
         thread.start();
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public boolean isKeepRunning() {
+        return keepRunning;
+    }
+
+    public void setKeepRunning(boolean keepRunning) {
+        this.keepRunning = keepRunning;
+    }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public ServerSocket getServer() {
+        return server;
+    }
+
+    public void setServer(ServerSocket server) {
+        this.server = server;
+    }
+
+    public DataInputStream getIn() {
+        return in;
+    }
+
+    public void setIn(DataInputStream in) {
+        this.in = in;
+    }
+
+    public void setOut(DataOutputStream out) {
+        this.out = out;
     }
 }

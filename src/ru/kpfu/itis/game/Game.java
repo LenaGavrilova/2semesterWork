@@ -42,22 +42,22 @@ public class Game implements Runnable {
     private Color color1;
     private Color color2;
 
-    public Racket clientRacket;
-    public Racket serverRacket;
-    public ServerBall serverBall;
-    public ClientBall clientBall;
-    public Score score;
+    private Racket clientRacket;
+    private Racket serverRacket;
+    private ServerBall serverBall;
+    private ClientBall clientBall;
+    private Score score;
 
-    public Server server;
-    public Client client;
+    private Server server;
+    private Client client;
 
     private boolean isRunning;
-    public Thread thread;
+    private Thread thread;
 
     private String ip;
 
     private int status = -1;
-    public boolean paused;
+    private boolean paused;
 
     public Game() {
         start();
@@ -260,5 +260,165 @@ public class Game implements Runnable {
 
     public Score getScore() {
         return score;
+    }
+
+    public int getPORT() {
+        return PORT;
+    }
+
+    public GameFrame getGameFrame() {
+        return gameFrame;
+    }
+
+    public void setGameFrame(GameFrame gameFrame) {
+        this.gameFrame = gameFrame;
+    }
+
+    public String getTITLE() {
+        return TITLE;
+    }
+
+    public int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public int getRACKET_WIDTH() {
+        return RACKET_WIDTH;
+    }
+
+    public int getRACKET_HEIGHT() {
+        return RACKET_HEIGHT;
+    }
+
+    public String[] getRESULT_OPTIONS() {
+        return RESULT_OPTIONS;
+    }
+
+    public String getWELCOME_MESSAGE() {
+        return WELCOME_MESSAGE;
+    }
+
+    public String getSERVER_MESSAGE() {
+        return SERVER_MESSAGE;
+    }
+
+    public String getCLIENT_MESSAGE() {
+        return CLIENT_MESSAGE;
+    }
+
+    public BufferStrategy getBufferStrategy() {
+        return bufferStrategy;
+    }
+
+    public void setBufferStrategy(BufferStrategy bufferStrategy) {
+        this.bufferStrategy = bufferStrategy;
+    }
+
+    public Graphics getGraphics() {
+        return graphics;
+    }
+
+    public void setGraphics(Graphics graphics) {
+        this.graphics = graphics;
+    }
+
+    public KeyManager getKeyManager() {
+        return keyManager;
+    }
+
+    public void setKeyManager(KeyManager keyManager) {
+        this.keyManager = keyManager;
+    }
+
+    public Color getColor1() {
+        return color1;
+    }
+
+    public void setColor1(Color color1) {
+        this.color1 = color1;
+    }
+
+    public Color getColor2() {
+        return color2;
+    }
+
+    public void setColor2(Color color2) {
+        this.color2 = color2;
+    }
+
+    public void setClientRacket(Racket clientRacket) {
+        this.clientRacket = clientRacket;
+    }
+
+    public void setServerRacket(Racket serverRacket) {
+        this.serverRacket = serverRacket;
+    }
+
+    public ServerBall getServerBall() {
+        return serverBall;
+    }
+
+    public void setServerBall(ServerBall serverBall) {
+        this.serverBall = serverBall;
+    }
+
+    public void setClientBall(ClientBall clientBall) {
+        this.clientBall = clientBall;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public int getWIDTH() {
+        return WIDTH;
+    }
+
+    public String[] getWELCOME_OPTIONS() {
+        return WELCOME_OPTIONS;
     }
 }

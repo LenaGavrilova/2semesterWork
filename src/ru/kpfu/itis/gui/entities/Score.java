@@ -3,8 +3,8 @@ package ru.kpfu.itis.gui.entities;
 import java.awt.*;
 
 public class Score {
-    public static int GAME_WIDTH;
-    public static int GAME_HEIGHT;
+    private static int GAME_WIDTH;
+    private static int GAME_HEIGHT;
     public int player1;
     public int player2;
     private final Font FONT = new Font("Consolas", Font.PLAIN, 60);
@@ -28,5 +28,21 @@ public class Score {
         g.drawLine(GAME_WIDTH / 2, 0, GAME_WIDTH / 2, GAME_HEIGHT);
         g.drawString(String.valueOf(player1), (GAME_WIDTH / 2) - 85 , 50);
         g.drawString(String.valueOf(player2), (GAME_WIDTH / 2) + 20 , 50);
+    }
+
+    public static int getGameWidth() {
+        return GAME_WIDTH;
+    }
+
+    public static void setGameWidth(int gameWidth) {
+        GAME_WIDTH = gameWidth;
+    }
+
+    public static int getGameHeight() {
+        return GAME_HEIGHT;
+    }
+
+    public static void setGameHeight(int gameHeight) {
+        GAME_HEIGHT = gameHeight;
     }
 }

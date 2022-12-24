@@ -17,10 +17,23 @@ public class ClientBall implements Ball {
         graphics.fillOval(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
     }
 
+    public int getX() {
+        return x;
+    }
+
     public void setX(int x) {
         this.x = x;
     }
+
+    public int getY() {
+        return y;
+    }
+
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getRADIUS() {
+        return RADIUS;
     }
 }
