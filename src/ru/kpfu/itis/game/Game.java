@@ -150,11 +150,21 @@ public class Game implements Runnable {
                 paused = true;
                 server = new Server(PORT, this);
                 server.start();
-                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " +  InetAddress.getLocalHost());
+                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + "Your IP address is " +  getIP());
                 break;
         }
-        System.out.println(server.getSocket().getInetAddress().getHostAddress());
 
+    }
+
+    public String getIP() {
+        String address;
+        try {
+            address = String.valueOf(InetAddress.getLocalHost());
+        } catch (UnknownHostException e) {
+            throw new IllegalArgumentException(e);
+        }
+        String[] parts = address.split("/");
+        return parts[1];
     }
 
     public Racket getRacket() {
@@ -215,7 +225,7 @@ public class Game implements Runnable {
 
 
     public Color setBallColor() {
-        return  JColorChooser.showDialog(null, "Цвет", null);
+        return  JColorChooser.showDialog(null, "Choose ball color", Color.green);
     }
 
     @Override
