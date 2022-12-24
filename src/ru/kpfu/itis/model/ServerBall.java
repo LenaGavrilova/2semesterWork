@@ -63,7 +63,7 @@ public class ServerBall implements Ball {
             score.player1++;
         }
 
-        if(score.player2 > 4) {
+        if(score.player1 > 4) {
             try {
                 game.paused=true;
                 game.getServer().getOut().writeUTF("You win!");
@@ -74,7 +74,7 @@ public class ServerBall implements Ball {
             }
         }
 
-        if(score.player1 > 4) {
+        if(score.player2 > 4) {
             try{
                 game.paused=true;
                 game.getServer().getOut().writeUTF("You lose!");
