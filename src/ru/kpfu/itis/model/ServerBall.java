@@ -65,21 +65,23 @@ public class ServerBall implements Ball {
             score.player1++;
         }
 
-//        if(score.player2 == 5) {
-//            try{
-//                game.getServer().getOut().writeUTF("Winner " + game.namePlayer2);
-//            } catch (IOException ex){
-//                throw new IllegalArgumentException(ex);
-//            }
-//        }
+        if(score.player2 == 1) {
+            try {
+                game.getServer().getOut().writeUTF("You win!");
+                System.out.println("you lose");
+            } catch (IOException ex){
+                throw new IllegalArgumentException(ex);
+            }
+        }
 
-//        if(score.player1 == 5) {
-//            try{
-//                game.getServer().getOut().writeUTF("Winner " + game.namePlayer1);
-//            } catch (IOException ex){
-//                throw new IllegalArgumentException(ex);
-//            }
-//        }
+        if(score.player1 == 1) {
+            try{
+                game.getServer().getOut().writeUTF("You lose!");
+                System.out.println("you win");
+            } catch (IOException ex){
+                throw new IllegalArgumentException(ex);
+            }
+        }
 
 
         try {
