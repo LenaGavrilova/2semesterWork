@@ -1,5 +1,5 @@
 # 2semesterWork
-Ping-pong game
+Ping-pong game  
 Запуск игры, если запускается первый раз, то start game, если нужно присоединиться к уже созданное игре(к серверу), то join game
 ![image](https://user-images.githubusercontent.com/90480521/209447306-54486820-9b4b-4c1a-9edb-a643a54458f1.png)
 Выбор цвета мячика
