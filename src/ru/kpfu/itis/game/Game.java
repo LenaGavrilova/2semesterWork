@@ -13,6 +13,7 @@ import ru.kpfu.itis.view.GameFrame;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.*;
@@ -49,6 +50,10 @@ public class Game implements Runnable {
 
     private boolean isRunning;
     public Thread thread;
+
+    private String messageName = "Input your name: ";
+    private String messageIP= "Input your IP addrres to start game: ";
+    private String ip;
 
 
     public int status = -1;
@@ -98,7 +103,7 @@ public class Game implements Runnable {
 
     }
 
-    public void init() {
+    public void init() throws UnknownHostException {
 
         gameFrame = new GameFrame(title, width, height);
 
@@ -131,22 +136,24 @@ public class Game implements Runnable {
                 break;
             case (1):
                 color1 = setBallColor();
-                namePlayer2 = inputName();
+                namePlayer2 = inputData(messageName);
+                ip = inputData(messageIP);
                 status = 1;
                 paused = false;
-                client = new Client(null,PORT,this);
+                client = new Client(ip,PORT,this);
                 client.start();
                 break;
             case (0):
                 color2 = setBallColor();
-                namePlayer1= inputName();
+                namePlayer1= inputData(messageName);
                 status = 0;
                 paused = true;
                 server = new Server(PORT, this);
                 server.start();
-                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join");
+                JOptionPane.showMessageDialog(null,"Waiting for player 2. Enter OK and game will start when player 2 join. \n" + InetAddress.getLocalHost());
                 break;
         }
+        System.out.println(server.getSocket().getInetAddress().getHostAddress());
 
     }
 
@@ -192,18 +199,20 @@ public class Game implements Runnable {
         return score;
     }
 
-    public String inputName() {
-        String name =  JOptionPane.showInputDialog(gameFrame.getFrame(),"Input your name:");
-        if (name.length() != 0) {
-            return name;
+    public String inputData(String message) {
+        String data =  JOptionPane.showInputDialog(gameFrame.getFrame(),message);
+        if (data.length() != 0) {
+            return data;
         } else {
-            while (name.length() == 0) {
-                name = JOptionPane.showInputDialog(gameFrame.getFrame(),"Input your name:");
+            while (data.length() == 0) {
+                data = JOptionPane.showInputDialog(gameFrame.getFrame(),message);
             }
-            return name;
+            return data;
 
         }
     }
+
+
 
     public Color setBallColor() {
         return  JColorChooser.showDialog(null, "Цвет", null);
@@ -212,7 +221,11 @@ public class Game implements Runnable {
     @Override
     public void run() {
 
-        init();
+        try {
+            init();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         double fps = 60;
         double timePeriodTick = 1000000000 / fps;

@@ -80,6 +80,10 @@ public class Server implements Runnable {
 
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     public synchronized void start() {
         if (keepRunning) {
             return;

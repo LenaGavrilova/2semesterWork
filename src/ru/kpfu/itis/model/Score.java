@@ -5,9 +5,16 @@ import java.awt.*;
 public class Score {
     public static int GAME_WIDTH;
     public static int GAME_HEIGHT;
-
     public int player1;
     public int player2;
+
+    public int getPlayer1() {
+        return player1;
+    }
+
+    public int getPlayer2() {
+        return player2;
+    }
 
     public void setPlayer1(int player1) {
         this.player1 = player1;
